@@ -15,6 +15,9 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&family=Great+Vibes&family=Parisienne&display=swap" rel="stylesheet">
     
+    <!-- Model Viewer -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+    
     <style>
         :root {
             --primary: #FF9AA2;
@@ -104,69 +107,45 @@
             padding: 0 10px;
         }
         
-        /* Logo - Gâteau avec effets - taille AUGMENTÉE */
+        /* Logo 3D - Gâteau en 3D avec effets - taille AUGMENTÉE */
         .logo-container {
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: clamp(140px, 22vw, 220px);
-            height: clamp(140px, 22vw, 220px);
+            width: clamp(180px, 25vw, 280px);
+            height: clamp(180px, 25vw, 280px);
         }
-        
+
         .logo {
-            font-size: clamp(5rem, 12vw, 9rem);
-            color: var(--primary);
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             z-index: 2;
-            filter: drop-shadow(0 0 15px rgba(255, 154, 162, 0.5));
+            border-radius: 50%;
+            overflow: hidden;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
         }
-        
-        .cake-icon {
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            text-shadow: var(--shadow-strong);
-            animation: float 6s ease-in-out infinite, rotateY 8s linear infinite;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            will-change: transform, content;
-        }
-        
-        .cake-icon:hover {
-            transform: scale(1.3) rotate(15deg);
-            text-shadow: var(--glow);
-            cursor: pointer;
-            animation-play-state: paused;
-        }
-        
-        /* Cercle animé autour du logo */
-        .circle {
-            position: absolute;
+
+        /* Ajustements pour le modèle 3D */
+        model-viewer {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 2px solid transparent;
-            border-top-color: var(--primary);
-            border-right-color: var(--primary);
-            animation: spin 8s linear infinite;
-            z-index: 1;
+            transition: var(--transition);
+            animation: float 6s ease-in-out infinite;
+            cursor: pointer;
+            background-color: transparent;
         }
-        
-        .circle:nth-child(2) {
-            width: 80%;
-            height: 80%;
-            border: 1px solid transparent;
-            border-bottom-color: var(--primary-light);
-            border-left-color: var(--primary-light);
-            animation: spinReverse 6s linear infinite;
+
+        model-viewer:hover {
+            transform: scale(1.3) rotateY(15deg);
+            animation-play-state: paused;
         }
-        
+
         /* Nom sans animation - by en rose, Délice Naoual en noir */
         .brand {
             font-family: 'Parisienne', cursive;
@@ -618,7 +597,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -2;
+            z-index: -1;
             overflow: hidden;
         }
         
@@ -685,12 +664,8 @@
             }
             
             .logo-container {
-                width: clamp(100px, 25vw, 160px);
-                height: clamp(100px, 25vw, 160px);
-            }
-            
-            .logo {
-                font-size: clamp(4rem, 14vw, 7rem);
+                width: clamp(140px, 25vw, 200px);
+                height: clamp(140px, 25vw, 200px);
             }
             
             .brand {
@@ -746,12 +721,8 @@
             }
             
             .logo-container {
-                width: 100px;
-                height: 100px;
-            }
-            
-            .logo {
-                font-size: 4.5rem;
+                width: 120px;
+                height: 120px;
             }
             
             .brand {
@@ -809,12 +780,8 @@
             }
             
             .logo-container {
-                width: 90px;
-                height: 90px;
-            }
-            
-            .logo {
-                font-size: 4rem;
+                width: 100px;
+                height: 100px;
             }
             
             .brand {
@@ -869,12 +836,8 @@
             }
             
             .logo-container {
-                width: 80px;
-                height: 80px;
-            }
-            
-            .logo {
-                font-size: 3.5rem;
+                width: 100px;
+                height: 100px;
             }
             
             .brand {
@@ -901,10 +864,6 @@
         @media (hover: none) and (pointer: coarse) {
             .btn-perfected:active {
                 transform: translateY(-4px) scale(0.98);
-            }
-            
-            .cake-icon:active {
-                transform: scale(1.2) rotate(15deg);
             }
             
             .btn-perfected:hover .btn-wave {
@@ -960,13 +919,27 @@
     <div class="container">
         <!-- En-tête avec logo et nom -->
         <div class="header">
+            <!-- Logo 3D - Gâteau en 3D avec effets -->
             <div class="logo-container">
                 <div class="circle"></div>
                 <div class="circle"></div>
                 <div class="logo">
-                    <div class="cake-icon" id="cakeIcon" title="🍰 Pâtisserie artisanale">
-                        🍰
-                    </div>
+                    <model-viewer 
+                        id="cake3DModel"
+                        src="/3D images/handpainted_watercolor_cake.glb" 
+                        alt="Gâteau 3D Délice by Naoual" 
+                        disable-zoom 
+                        auto-rotate
+                        ar
+                        ar-modes="scene-viewer quick-look"
+                        environment-image="neutral"
+                        exposure="1"
+                        shadow-intensity="1"
+                        camera-orbit="0deg 75deg 105%"
+                        field-of-view="25deg"
+                        style="width: 100%; height: 100%;"
+                        title="Gâteau 3D Délice by Naoual">
+                    </model-viewer>
                 </div>
             </div>
             
@@ -1041,64 +1014,47 @@
     </div>
 
     <script>
-        // Pluie de gâteaux INFINIE - système amélioré
+        // Pluie de gâteaux INFINIE
         let pastryInterval;
         let activePastries = 0;
-        const maxPastries = 40; // Réduit pour meilleures performances sur mobile
+        const maxPastries = 30;
         
         function createPastryRain() {
             const pastryRain = document.getElementById('pastryRain');
             const pastries = ['🍰', '🧁', '🎂', '🍪', '🥐', '🍩'];
             
-            // Nettoyer l'intervalle existant
             if (pastryInterval) clearInterval(pastryInterval);
             
-            // Créer des gâteaux continuellement
             pastryInterval = setInterval(() => {
-                // Vérifier qu'on ne dépasse pas le maximum
                 if (activePastries >= maxPastries) return;
                 
                 const pastry = document.createElement('div');
                 pastry.className = 'pastry-item';
-                
-                // Sélectionner un gâteau aléatoire
                 const pastryType = pastries[Math.floor(Math.random() * pastries.length)];
                 pastry.textContent = pastryType;
                 
-                // Position horizontale aléatoire
                 const leftPos = Math.random() * 100;
                 pastry.style.left = `${leftPos}vw`;
                 
-                // Taille aléatoire entre 15px et 30px
                 const size = Math.random() * 15 + 15;
                 pastry.style.fontSize = `${size}px`;
                 
-                // Délai d'animation aléatoire
                 const delay = Math.random() * 5;
                 pastry.style.animationDelay = `${delay}s`;
                 
-                // Durée d'animation aléatoire entre 8s et 18s
                 const duration = Math.random() * 10 + 8;
                 pastry.style.animationDuration = `${duration}s`;
                 
-                // Couleur légèrement aléatoire
                 const hue = Math.floor(Math.random() * 30) + 320;
                 const saturation = Math.floor(Math.random() * 30) + 70;
                 const lightness = Math.floor(Math.random() * 20) + 60;
                 pastry.style.color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
                 
-                // Rotation initiale
-                const startRotate = Math.random() * 360;
-                pastry.style.transform = `translateY(-100px) rotate(${startRotate}deg)`;
-                
-                // Ombre portée
                 pastry.style.textShadow = `0 0 8px hsla(${hue}, ${saturation}%, ${lightness}%, 0.5)`;
                 
-                // Ajouter au DOM
                 pastryRain.appendChild(pastry);
                 activePastries++;
                 
-                // Supprimer après l'animation
                 setTimeout(() => {
                     if (pastry.parentNode) {
                         pastry.remove();
@@ -1106,153 +1062,98 @@
                     }
                 }, duration * 1000);
                 
-            }, 250); // Crée un nouveau gâteau toutes les 250ms (plus lent pour mobile)
+            }, 300);
         }
         
-        // EFFET SPÉCIAL : Icône qui change de gâteau à chaque tour complet
-        const cakeIcon = document.getElementById('cakeIcon');
-        const cakeEmojis = ['🍰', '🧁', '🎂', '🍪', '🥐', '🍩'];
-        let currentCakeIndex = 0;
-        let rotationCount = 0;
-        const rotationsPerChange = 1; // Change à chaque tour complet
+        // Effets sur le modèle 3D
+        const cake3DModel = document.getElementById('cake3DModel');
         
-        // Surveiller l'animation de rotation
-        cakeIcon.addEventListener('animationiteration', function(event) {
-            if (event.animationName === 'rotateY') {
-                rotationCount++;
-                
-                if (rotationCount >= rotationsPerChange) {
-                    rotationCount = 0;
-                    
-                    // Changer le gâteau
-                    currentCakeIndex = (currentCakeIndex + 1) % cakeEmojis.length;
-                    cakeIcon.textContent = cakeEmojis[currentCakeIndex];
-                    
-                    // Effet subtil de changement
-                    cakeIcon.style.transform = 'scale(1.1)';
-                    setTimeout(() => {
-                        cakeIcon.style.transform = '';
-                    }, 200);
-                }
-            }
-        });
-        
-        // Effets sur l'icône de gâteau 3D
-        cakeIcon.addEventListener('mouseenter', function() {
+        cake3DModel.addEventListener('mouseenter', function() {
             this.style.animationPlayState = 'paused';
-            this.style.transform = 'scale(1.3) rotate(15deg)';
-            this.style.textShadow = '0 0 30px rgba(255,154,162,1), 0 0 60px rgba(255,154,162,0.8), 0 0 90px rgba(255,154,162,0.5)';
+            this.style.transform = 'scale(1.3) rotateY(15deg)';
             
-            // Effet sur les cercles
             const circles = document.querySelectorAll('.circle');
             circles.forEach(circle => {
                 circle.style.animationDuration = '2s';
             });
-            
-            // Ajouter quelques gâteaux supplémentaires à la pluie
-            addExtraPastries();
         });
         
-        cakeIcon.addEventListener('mouseleave', function() {
+        cake3DModel.addEventListener('mouseleave', function() {
             this.style.animationPlayState = 'running';
             this.style.transform = '';
-            this.style.textShadow = '';
             
-            // Réinitialiser les cercles
             const circles = document.querySelectorAll('.circle');
             circles.forEach(circle => {
                 circle.style.animationDuration = '';
             });
         });
         
-        // Cliquer sur l'icône pour un effet spécial
-        cakeIcon.addEventListener('click', function() {
-            // Effet de flash
-            document.body.style.backgroundColor = 'rgba(255, 154, 162, 0.1)';
-            setTimeout(() => {
-                document.body.style.backgroundColor = '';
-            }, 300);
-            
-            // Animation de l'icône
-            this.style.transform = 'scale(1.5) rotate(360deg)';
+        cake3DModel.addEventListener('click', function() {
+            this.style.transform = 'scale(1.5) rotateY(360deg)';
             this.style.transition = 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.5)';
-            this.style.textShadow = '0 0 50px rgba(255,154,162,1), 0 0 80px rgba(255,154,162,0.8)';
             
-            // Effet spécial : changement rapide de plusieurs gâteaux
-            let rapidChangeCount = 0;
-            const rapidChangeInterval = setInterval(() => {
-                currentCakeIndex = (currentCakeIndex + 1) % cakeEmojis.length;
-                cakeIcon.textContent = cakeEmojis[currentCakeIndex];
-                rapidChangeCount++;
-                
-                if (rapidChangeCount >= 8) {
-                    clearInterval(rapidChangeInterval);
-                }
-            }, 100);
-            
-            // Créer une explosion de gâteaux
             createPastryExplosion();
-            
-            // Augmenter temporairement la pluie
             speedUpRain();
             
             setTimeout(() => {
                 this.style.transform = '';
-                this.style.textShadow = '';
             }, 800);
         });
         
-        // Fonction pour ajouter des gâteaux supplémentaires à la pluie
-        function addExtraPastries() {
+        // Effet d'explosion de gâteaux
+        function createPastryExplosion() {
             const pastryRain = document.getElementById('pastryRain');
             const pastries = ['🍰', '🧁', '🎂', '🍪', '🥐', '🍩'];
             
-            for (let i = 0; i < 3; i++) {
-                if (activePastries >= maxPastries) break;
-                
+            for (let i = 0; i < 12; i++) {
                 const pastry = document.createElement('div');
                 pastry.className = 'pastry-item';
                 pastry.textContent = pastries[Math.floor(Math.random() * pastries.length)];
                 
-                // Position autour de l'icône
-                const angle = Math.random() * Math.PI * 2;
-                const radius = 100;
                 const centerX = window.innerWidth / 2;
                 const centerY = window.innerHeight / 2;
                 
-                pastry.style.left = `${centerX + Math.cos(angle) * radius}px`;
-                pastry.style.top = `${centerY + Math.sin(angle) * radius}px`;
-                pastry.style.fontSize = `${Math.random() * 12 + 12}px`;
-                const duration = Math.random() * 5 + 5;
-                pastry.style.animationDuration = `${duration}s`;
-                
-                const hue = Math.floor(Math.random() * 20) + 330;
-                pastry.style.color = `hsl(${hue}, 80%, 70%)`;
+                pastry.style.left = `${centerX}px`;
+                pastry.style.top = `${centerY}px`;
+                pastry.style.fontSize = `${Math.random() * 18 + 15}px`;
+                pastry.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                pastry.style.color = `hsl(${Math.floor(Math.random() * 30) + 320}, 90%, 65%)`;
+                pastry.style.animation = 'none';
+                pastry.style.transition = 'all 0.8s ease-out';
                 
                 pastryRain.appendChild(pastry);
                 activePastries++;
                 
-                // Supprimer après l'animation
+                setTimeout(() => {
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * 250 + 80;
+                    const targetX = centerX + Math.cos(angle) * distance;
+                    const targetY = centerY + Math.sin(angle) * distance;
+                    
+                    pastry.style.left = `${targetX}px`;
+                    pastry.style.top = `${targetY}px`;
+                    pastry.style.opacity = '0';
+                    pastry.style.transform = `rotate(${Math.random() * 720}deg)`;
+                }, 10);
+                
                 setTimeout(() => {
                     if (pastry.parentNode) {
                         pastry.remove();
                         activePastries--;
                     }
-                }, duration * 1000);
+                }, 1000);
             }
         }
         
-        // Fonction pour accélérer temporairement la pluie
+        // Accélérer la pluie temporairement
         function speedUpRain() {
-            const originalSpeed = 250;
-            const speedUpSpeed = 80;
+            const originalSpeed = 300;
+            const speedUpSpeed = 100;
             
-            // Accélérer
             clearInterval(pastryInterval);
             pastryInterval = setInterval(() => {
                 if (activePastries >= maxPastries) return;
                 
-                // Créer 2 gâteaux au lieu d'un
                 for (let i = 0; i < 2; i++) {
                     if (activePastries >= maxPastries) break;
                     
@@ -1281,68 +1182,16 @@
                 }
             }, speedUpSpeed);
             
-            // Revenir à la vitesse normale après 2.5 secondes
             setTimeout(() => {
                 clearInterval(pastryInterval);
                 createPastryRain();
             }, 2500);
         }
         
-        // Fonction pour créer une explosion de gâteaux
-        function createPastryExplosion() {
-            const pastryRain = document.getElementById('pastryRain');
-            const pastries = ['🍰', '🧁', '🎂', '🍪', '🥐', '🍩'];
-            
-            for (let i = 0; i < 12; i++) {
-                const pastry = document.createElement('div');
-                pastry.className = 'pastry-item';
-                pastry.textContent = pastries[Math.floor(Math.random() * pastries.length)];
-                
-                // Position au centre (où se trouve l'icône)
-                const centerX = window.innerWidth / 2;
-                const centerY = window.innerHeight / 2;
-                
-                pastry.style.left = `${centerX}px`;
-                pastry.style.top = `${centerY}px`;
-                pastry.style.fontSize = `${Math.random() * 18 + 15}px`;
-                pastry.style.animationDuration = `${Math.random() * 3 + 2}s`;
-                pastry.style.color = `hsl(${Math.floor(Math.random() * 30) + 320}, 90%, 65%)`;
-                
-                // Animation d'explosion (part du centre)
-                pastry.style.animation = 'none';
-                pastry.style.transition = 'all 0.8s ease-out';
-                
-                pastryRain.appendChild(pastry);
-                activePastries++;
-                
-                // Déplacer dans une direction aléatoire
-                setTimeout(() => {
-                    const angle = Math.random() * Math.PI * 2;
-                    const distance = Math.random() * 250 + 80;
-                    const targetX = centerX + Math.cos(angle) * distance;
-                    const targetY = centerY + Math.sin(angle) * distance;
-                    
-                    pastry.style.left = `${targetX}px`;
-                    pastry.style.top = `${targetY}px`;
-                    pastry.style.opacity = '0';
-                    pastry.style.transform = `rotate(${Math.random() * 720}deg)`;
-                }, 10);
-                
-                // Supprimer après l'animation
-                setTimeout(() => {
-                    if (pastry.parentNode) {
-                        pastry.remove();
-                        activePastries--;
-                    }
-                }, 1000);
-            }
-        }
-        
-        // Effets avancés sur les boutons perfectionnés
+        // Effets sur les boutons
         const perfectedButtons = document.querySelectorAll('.btn-perfected');
         
         perfectedButtons.forEach(btn => {
-            // Effet de lumière qui suit la souris dans le bouton
             const light = btn.querySelector('.btn-light');
             
             btn.addEventListener('mousemove', (e) => {
@@ -1350,12 +1199,9 @@
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
                 
-                // Positionner la lumière
                 light.style.left = `${x}px`;
                 light.style.top = `${y}px`;
                 light.style.transform = 'translate(-50%, -50%)';
-                
-                // Animation pulsante du bouton
                 btn.style.animation = 'pulse 2s infinite';
             });
             
@@ -1363,84 +1209,30 @@
                 btn.style.animation = '';
             });
             
-            // Effet de clic avec onde de choc
             btn.addEventListener('click', function(e) {
-                // Créer un indicateur de clic
                 const indicator = document.createElement('div');
                 indicator.className = 'click-indicator';
                 indicator.style.left = `${e.offsetX}px`;
                 indicator.style.top = `${e.offsetY}px`;
                 this.appendChild(indicator);
                 
-                // Animation de l'indicateur
                 indicator.style.animation = 'clickRipple 0.6s ease-out forwards';
                 
-                // Supprimer après animation
                 setTimeout(() => {
                     indicator.remove();
                 }, 600);
                 
-                // Effet de vibration légère
                 this.style.transform = 'scale(0.98)';
                 setTimeout(() => {
                     this.style.transform = '';
                 }, 150);
-                
-                // Ajouter quelques gâteaux à la pluie au clic
-                addPastryOnClick(e.clientX, e.clientY);
             });
         });
         
-        // Fonction pour ajouter un gâteau à la pluie au clic
-        function addPastryOnClick(x, y) {
-            if (activePastries >= maxPastries) return;
-            
-            const pastryRain = document.getElementById('pastryRain');
-            const pastries = ['🍰', '🧁', '🎂', '🍪'];
-            
-            const pastry = document.createElement('div');
-            pastry.className = 'pastry-item';
-            pastry.textContent = pastries[Math.floor(Math.random() * pastries.length)];
-            
-            pastry.style.left = `${x}px`;
-            pastry.style.top = `${y}px`;
-            pastry.style.fontSize = `${Math.random() * 12 + 12}px`;
-            const duration = Math.random() * 8 + 4;
-            pastry.style.animationDuration = `${duration}s`;
-            pastry.style.color = `hsl(${Math.floor(Math.random() * 20) + 330}, 80%, 70%)`;
-            
-            pastryRain.appendChild(pastry);
-            activePastries++;
-            
-            // Supprimer après l'animation
-            setTimeout(() => {
-                if (pastry.parentNode) {
-                    pastry.remove();
-                    activePastries--;
-                }
-            }, duration * 1000);
-        }
-        
-        // Redimensionnement de la fenêtre
-        let resizeTimeout;
-        function handleResize() {
-            // Debounce pour éviter trop d'appels
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                // Recréer la pluie pour s'adapter à la nouvelle taille
-                const pastryItems = document.querySelectorAll('.pastry-item');
-                pastryItems.forEach(item => item.remove());
-                activePastries = 0;
-                createPastryRain();
-            }, 250);
-        }
-        
-        // Initialisation au chargement
+        // Initialisation
         window.addEventListener('load', () => {
-            // Créer la pluie de gâteaux INFINIE
             createPastryRain();
             
-            // Animation séquentielle des boutons
             perfectedButtons.forEach((btn, index) => {
                 setTimeout(() => {
                     btn.style.opacity = '1';
@@ -1448,7 +1240,6 @@
                 }, 300 + (index * 100));
             });
             
-            // Ajouter un effet de fondu au chargement
             document.body.style.opacity = '0';
             document.body.style.transition = 'opacity 0.8s ease';
             
@@ -1457,51 +1248,44 @@
             }, 100);
         });
         
-        // Recréer la pluie de gâteaux lors du redimensionnement
+        // Redimensionnement
+        let resizeTimeout;
+        function handleResize() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const pastryItems = document.querySelectorAll('.pastry-item');
+                pastryItems.forEach(item => item.remove());
+                activePastries = 0;
+                createPastryRain();
+            }, 250);
+        }
+        
         window.addEventListener('resize', handleResize);
         
-        // Optimisation pour mobile - réduire les effets si nécessaire
+        // Optimisation pour mobile
         function checkMobilePerformance() {
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            const isLowEnd = (navigator.deviceMemory && navigator.deviceMemory < 4) || 
-                            (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
             
-            if (isMobile || isLowEnd) {
-                // Réduire le nombre maximum de gâteaux
-                maxPastries = 25;
-                
-                // Ralentir la création de gâteaux
+            if (isMobile) {
+                maxPastries = 20;
                 clearInterval(pastryInterval);
                 createPastryRain();
-                
-                // Réduire certaines animations
-                document.querySelectorAll('.btn-border').forEach(border => {
-                    border.style.animationDuration = '10s';
-                });
             }
         }
         
-        // Vérifier les performances au chargement
         window.addEventListener('load', checkMobilePerformance);
         
-        // Réduire les animations si l'utilisateur préfère
+        // Réduire les animations si préféré
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            // Arrêter la pluie infinie
             clearInterval(pastryInterval);
             
-            // Ralentir les autres animations
             document.querySelectorAll('.pastry-item').forEach(el => {
                 el.style.animation = 'none';
-                el.style.opacity = '0.2';
             });
             
-            // Arrêter les animations des boutons
             document.querySelectorAll('.btn-border, .btn-wave').forEach(el => {
                 el.style.animation = 'none';
             });
-            
-            // Arrêter l'animation de l'icône
-            cakeIcon.style.animation = 'none';
         }
     </script>
 </body>
